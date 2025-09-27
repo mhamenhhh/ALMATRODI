@@ -1,0 +1,57 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.matroodi.wholesale3"
+    compileSdk = 35
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.matroodi.wholesale3"
+        minSdkVersion 21        // أو القيمة اللي تحتاجها فعليًا
+        targetSdkVersion 35
+        versionCode 15
+        versionName "1.0.7"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("key.jks")
+            storePassword "mat12345"
+            keyAlias "matroodi_key"
+            keyPassword "mat12345"
+        }
+    }
+
+
+    buildTypes {
+        release {
+            // ✅ تصغير الكود والحجم
+            minifyEnabled false
+            shrinkResources false
+            signingConfig = signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}
+
+// ✅ تبقى آخر السطر
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تنزيل التطبيق</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f8f9fa;
+    }
+    h1 {
+      color: #007b83;
+    }
+    #qr {
+      margin: 20px auto;
+    }
+    .download-btn {
+      padding: 15px 25px;
+      font-size: 18px;
+      background-color: #007b83;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .version {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📱 تحميل آخر إصدار من التطبيق</h1>
+  <canvas id="qr" width="200" height="200"></canvas>
+  <div id="version" class="version">جارٍ التحقق من النسخة...</div>
+  <button id="download" class="download-btn" style="display:none">📥 تحميل التطبيق</button>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      databaseURL: "https://fapp-e0966-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // جلب الرابط والنسخة من قاعدة البيانات
+    db.ref("app_update").get().then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const apkUrl = data.apk_url;
+        const version = data.latest_version;
+
+        document.getElementById("version").innerText = `الإصدار الحالي: ${version}`;
+        document.getElementById("download").style.display = "inline-block";
+        document.getElementById("download").onclick = () => window.location.href = apkUrl;
+
+        // توليد QR
+        const qr = new QRious({
+          element: document.getElementById("qr"),
+          value: apkUrl,
+          size: 200
+        });
+      } else {
+        document.getElementById("version").innerText = "⚠️ لا توجد بيانات.";
+      }
+    }).catch((error) => {
+      document.getElementById("version").innerText = "❌ فشل الاتصال بـ Firebase.";
+      console.error("Firebase error:", error);
+    });
+  </script>
+
+</body>
+</html>
