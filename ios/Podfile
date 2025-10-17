@@ -1,8 +1,8 @@
-# Uncomment the next line to define a global platform for your project
 platform :ios, '13.0'
 
 use_frameworks!
 use_modular_headers!
+$FirebaseSDKVersion = '10.27.0'
 
 target 'Runner' do
   flutter_application_path = '../'
