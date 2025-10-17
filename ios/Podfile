@@ -1,8 +1,13 @@
+# Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
+
+# ✅ نحدد نسخة Firebase مستقرة حتى لا تحدث مشاكل مع Swift
+$FirebaseSDKVersion = '10.20.0'
 
 use_frameworks! :linkage => :static
 use_modular_headers!
 
+# CocoaPods analytics disable
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -14,25 +19,39 @@ project 'Runner', {
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
-    raise "#{generated_xcode_build_settings_path} must exist. Run flutter pub get first."
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
   end
+
   File.foreach(generated_xcode_build_settings_path) do |line|
-    matches = line.match(/FLUTTER_ROOT=(.*)/)
+    matches = line.match(/FLUTTER_ROOT\=(.*)/)
     return matches[1].strip if matches
   end
   raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}"
 end
 
-require File.expand_path(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb'))
+require File.expand_path(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper'))
 
 flutter_ios_podfile_setup
 
 target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # ✅ نثبت مكتبات Firebase بإصدارات ثابتة لتجنب أخطاء Swift
+  pod 'Firebase/Core', $FirebaseSDKVersion
+  pod 'FirebaseFirestore', $FirebaseSDKVersion
+  pod 'FirebaseAuth', $FirebaseSDKVersion
+  pod 'FirebaseDatabase', $FirebaseSDKVersion
+  pod 'FirebaseMessaging', $FirebaseSDKVersion
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    # ✅ تعطيل بعض التحذيرات والتأكد من دعم Swift 5.9
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      config.build_settings['SWIFT_VERSION'] = '5.9'
+    end
   end
 end
