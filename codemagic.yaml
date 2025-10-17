@@ -1,0 +1,24 @@
+workflows:
+  ios-build:
+    name: Build iOS App
+    environment:
+      flutter: stable
+      xcode: 15.4
+      vars:
+        LC_CTYPE: "en_US.UTF-8"
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Clean project
+        script: |
+          flutter clean
+      - name: Build iOS app
+        script: |
+          flutter build ios --debug --no-codesign
+    artifacts:
+      - build/ios/Debug-iphoneos/*.app
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - build
