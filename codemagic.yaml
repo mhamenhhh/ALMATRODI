@@ -1,24 +1,39 @@
 workflows:
-  ios-build:
-    name: Build iOS App
+  ios-release:
+    name: iOS Release Build
+    max_build_duration: 60
     environment:
       flutter: stable
-      xcode: 15.4
+      xcode: latest
+      cocoapods: default
       vars:
-        LC_CTYPE: "en_US.UTF-8"
+        APP_ID: "com.matroodi.wholesale3"       # غيّر هذا حسب الـ Bundle ID مالتك
+        BUNDLE_NAME: "MYAPP"                    # اسم التطبيق
+      groups:
+        - ios_credentials                        # مجموعة الشهادات اللي أضفتها في Environment variables
+
     scripts:
-      - name: Get Flutter dependencies
-        script: |
-          flutter pub get
-      - name: Clean project
+      - name: 🧹 Clean & Get Dependencies
         script: |
           flutter clean
-      - name: Build iOS app
+          flutter pub get
+          flutter precache --ios
+          cd ios
+          rm -rf Pods Podfile.lock
+          pod repo update
+          pod install
+          cd ..
+
+      - name: 🏗️ Build iOS release .ipa
         script: |
-          flutter build ios --debug --no-codesign
+          flutter build ipa --release --no-tree-shake-icons
+
     artifacts:
-      - build/ios/Debug-iphoneos/*.app
-    cache:
-      cache_paths:
-        - ~/.pub-cache
-        - build
+      - build/ios/ipa/*.ipa
+
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
