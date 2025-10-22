@@ -2,7 +2,6 @@ workflows:
   ios-release:
     name: iOS Release Build
     max_build_duration: 60
-
     environment:
       flutter: stable
       xcode: latest
@@ -12,7 +11,7 @@ workflows:
         BUNDLE_NAME: "Matroodi Wholesale"
       groups:
         - ios_credentials
-        - ios_signing  # ← يحتوي المتغيرين CERTIFICATE_REFERENCE و PROFILE_REFERENCE
+        - ios_signing
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
@@ -28,11 +27,7 @@ workflows:
 
       - name: 🏗️ Build iOS release .ipa
         script: |
-          echo "🔐 Using certificate: $CERTIFICATE_REFERENCE"
-          echo "📱 Using provisioning profile: $PROFILE_REFERENCE"
-          flutter build ipa --release --no-tree-shake-icons \
-            --export-options-plist=ios/ExportOptions.plist \
-            --build-name=1.0.0 --build-number=1
+          flutter build ipa --release --no-tree-shake-icons
 
     artifacts:
       - build/ios/ipa/*.ipa
