@@ -13,6 +13,7 @@ workflows:
         - ios_credentials
         - ios_signing
 
+    # 👇 لاحظ هنا: code_signing في نفس مستوى environment و scripts
     code_signing:
       certificates:
         - $CERTIFICATE_REFERENCE
