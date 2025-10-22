@@ -12,12 +12,7 @@ workflows:
         BUNDLE_NAME: "Matroodi Wholesale"
       groups:
         - ios_credentials
-        - ios_signing
-
-    credentials:
-      ios:
-        certificate: $CERTIFICATE_REFERENCE
-        provisioning_profile: $PROFILE_REFERENCE
+        - ios_signing  # ← يحتوي المتغيرين CERTIFICATE_REFERENCE و PROFILE_REFERENCE
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
