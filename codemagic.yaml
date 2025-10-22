@@ -6,12 +6,17 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        APP_ID: "com.matroodi.wholesale3"
-        BUNDLE_NAME: "Matroodi Wholesale"
       groups:
         - ios_credentials
         - ios_signing
+      vars:
+        APP_ID: "com.matroodi.wholesale3"
+        BUNDLE_NAME: "Matroodi Wholesale"
+      code_signing:
+        certificates:
+          - $CERTIFICATE_REFERENCE
+        provisioning_profiles:
+          - $PROFILE_REFERENCE
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
@@ -29,8 +34,7 @@ workflows:
         script: |
           echo "🔐 Using certificate: $CERTIFICATE_REFERENCE"
           echo "📱 Using provisioning profile: $PROFILE_REFERENCE"
-          flutter build ipa --release --no-tree-shake-icons \
-            --export-options-plist=ios/ExportOptions.plist
+          flutter build ipa --release --no-tree-shake-icons --export-options-plist=ios/ExportOptions.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
