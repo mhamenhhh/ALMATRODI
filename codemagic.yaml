@@ -27,7 +27,10 @@ workflows:
 
       - name: 🏗️ Build iOS release .ipa
         script: |
-          flutter build ipa --release --no-tree-shake-icons
+          echo "🔐 Using certificate: $CERTIFICATE_REFERENCE"
+          echo "📱 Using provisioning profile: $PROFILE_REFERENCE"
+          flutter build ipa --release --no-tree-shake-icons \
+            --export-options-plist=ios/ExportOptions.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
