@@ -6,17 +6,18 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      groups:
-        - ios_credentials
-        - ios_signing
       vars:
         APP_ID: "com.matroodi.wholesale3"
         BUNDLE_NAME: "Matroodi Wholesale"
-      code_signing:
-        certificates:
-          - $CERTIFICATE_REFERENCE
-        provisioning_profiles:
-          - $PROFILE_REFERENCE
+      groups:
+        - ios_credentials
+        - ios_signing
+
+    code_signing:
+      certificates:
+        - $CERTIFICATE_REFERENCE
+      provisioning_profiles:
+        - $PROFILE_REFERENCE
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
