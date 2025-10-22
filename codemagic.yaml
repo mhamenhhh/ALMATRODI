@@ -11,12 +11,8 @@ workflows:
         BUNDLE_NAME: "Matroodi Wholesale"
       groups:
         - ios_credentials
-
-    code_signing:
-      certificates:
-        - reference: new23
-      provisioning_profiles:
-        - reference: new25
+        - new23
+        - new25
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
