@@ -7,10 +7,16 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        APP_ID: "com.matroodi.wholesale3"       # غيّر هذا حسب الـ Bundle ID مالتك
-        BUNDLE_NAME: "MYAPP"                    # اسم التطبيق
+        APP_ID: "com.matroodi.wholesale3"
+        BUNDLE_NAME: "Matroodi Wholesale"
       groups:
-        - ios_credentials                        # مجموعة الشهادات اللي أضفتها في Environment variables
+        - ios_credentials
+
+    code_signing:
+      certificates:
+        - reference: new23
+      provisioning_profiles:
+        - reference: new25
 
     scripts:
       - name: 🧹 Clean & Get Dependencies
