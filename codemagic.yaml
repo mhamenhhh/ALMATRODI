@@ -30,7 +30,9 @@ workflows:
         script: |
           echo "🔐 Using certificate: $CERTIFICATE_REFERENCE"
           echo "📱 Using provisioning profile: $PROFILE_REFERENCE"
-          flutter build ipa --release --no-tree-shake-icons --export-options-plist=ios/ExportOptions.plist
+          flutter build ipa --release --no-tree-shake-icons \
+            --export-options-plist=ios/ExportOptions.plist \
+            --build-name=1.0.0 --build-number=1
 
     artifacts:
       - build/ios/ipa/*.ipa
