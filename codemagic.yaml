@@ -38,6 +38,7 @@ workflows:
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
 
-    integrations:
-      app_store_connect: true
-      apple_developer_portal: true
+# 👇 ضيف هذا القسم خارج الـ workflow
+integrations:
+  app_store_connect: true
+  apple_developer_portal: true
