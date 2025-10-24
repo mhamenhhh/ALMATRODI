@@ -34,10 +34,6 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
 
-    code_signing:
-      certificate: $CERTIFICATE_REFERENCE
-      provisioning_profile: $PROFILE_REFERENCE
-
     publishing:
       app_store_connect:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
