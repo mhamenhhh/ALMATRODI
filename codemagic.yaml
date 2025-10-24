@@ -6,6 +6,7 @@ workflows:
       xcode: 15.4
       vars:
         LC_TYPE: "en_US.UTF-8"
+
     scripts:
       - name: Get Flutter dependencies
         script: |
