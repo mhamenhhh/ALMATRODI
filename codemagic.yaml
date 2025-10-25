@@ -23,6 +23,12 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
 
+    code_signing:
+      certificates:
+        - thawy
+      provisioning_profiles:
+        - thawy
+
     publishing:
       app_store_connect:
         api_key: $APP_STORE_KEY
