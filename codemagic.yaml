@@ -14,26 +14,26 @@ workflows:
         LC_TYPE: "en_US.UTF-8"
 
     scripts:
-      - name: Get Flutter dependencies
-        script: |
-          flutter pub get
-
-      - name: Update CocoaPods and Firebase dependencies
-        script: |
-          cd ios
-          pod repo update
-          pod update FirebaseSharedSwift FirebaseCore FirebaseCoreExtension
-          cd ..
-
-      - name: Clean project
+      - name: 🧹 Clean old build files
         script: |
           flutter clean
 
-      - name: Set up code signing
+      - name: 📦 Get Flutter dependencies
+        script: |
+          flutter pub get
+
+      - name: 🔧 Update CocoaPods and fix Firebase Swift issue
+        script: |
+          cd ios
+          pod repo update
+          pod install
+          cd ..
+
+      - name: 🔏 Set up code signing
         script: |
           xcode-project use-profiles
 
-      - name: Build iOS release app
+      - name: 🏗️ Build iOS release IPA
         script: |
           flutter build ipa --release --no-tree-shake-icons --codesign
 
@@ -48,3 +48,10 @@ workflows:
         issuer_id: $APP_STORE_ISSUER_ID
         key_id: $APP_STORE_KEY_ID
         submit_to_testflight: true
+
+      email:
+        recipients:
+          - hameed490@yahoo.com
+        notify:
+          success: true
+          failure: true

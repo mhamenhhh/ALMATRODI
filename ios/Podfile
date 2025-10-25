@@ -1,11 +1,11 @@
 # ==========================================================
-#  ✅ Podfile مضبوط لمشاريع Flutter + Firebase + Codemagic
+# ✅ Podfile مضبوط لمشاريع Flutter + Firebase + Codemagic
 # ==========================================================
 
 platform :ios, '13.0'
 
 # 🔹 نحدد نسخة مستقرة من Firebase لتفادي مشاكل Swift 6
-$FirebaseSDKVersion = '11.6.0'
+$FirebaseSDKVersion = '11.7.0'
 
 use_frameworks! :linkage => :static
 use_modular_headers!
@@ -39,20 +39,21 @@ flutter_ios_podfile_setup
 target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  # 🔹 مكتبات Firebase بإصدارات ثابتة ومتوافقة مع Xcode 16
+  # 🔹 مكتبات Firebase بإصدارات ثابتة ومتوافقة مع Xcode 15.4
   pod 'Firebase/Core', $FirebaseSDKVersion
   pod 'FirebaseAuth', $FirebaseSDKVersion
   pod 'FirebaseFirestore', $FirebaseSDKVersion
   pod 'FirebaseMessaging', $FirebaseSDKVersion
   pod 'FirebaseDatabase', $FirebaseSDKVersion
+  pod 'FirebaseSharedSwift', '11.7.0'  # ✅ حل خطأ Swift في FirebaseDataEncoder
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
-    # ✅ إصلاح أخطاء Swift في FirebaseDataEncoder
     target.build_configurations.each do |config|
+      # ✅ إصلاحات متعلقة بـ Swift و ARM64
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       config.build_settings['SWIFT_VERSION'] = '5.0'
       config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
