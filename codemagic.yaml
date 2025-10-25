@@ -4,6 +4,9 @@ workflows:
     environment:
       flutter: stable
       xcode: 15.4
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.matroodi.wholesale3
       vars:
         LC_TYPE: "en_US.UTF-8"
 
@@ -16,18 +19,16 @@ workflows:
         script: |
           flutter clean
 
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+
       - name: Build iOS release app
         script: |
           flutter build ipa --release --no-tree-shake-icons --codesign
 
     artifacts:
       - build/ios/ipa/*.ipa
-
-    code_signing:
-      certificates:
-        - thawy
-      provisioning_profiles:
-        - thawy
 
     publishing:
       app_store_connect:
