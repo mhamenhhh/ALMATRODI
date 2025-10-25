@@ -12,12 +12,10 @@ workflows:
 
     scripts:
       - name: Clean old build files
-        script: |
-          flutter clean
+        script: flutter clean
 
       - name: Get Flutter dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
 
       - name: Update CocoaPods and fix Firebase Swift issue
         script: |
@@ -27,13 +25,12 @@ workflows:
           pod install
           cd ..
 
-      - name: Set up code signing
+      - name: Build and export IPA for App Store
         script: |
-          xcode-project use-profiles
-
-      - name: Build iOS release IPA
-        script: |
-          flutter build ipa --release --no-tree-shake-icons --codesign
+          flutter build ipa --release \
+            --no-tree-shake-icons \
+            --export-method app-store \
+            --codesign
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -46,10 +43,3 @@ workflows:
         issuer_id: $APP_STORE_ISSUER_ID
         key_id: $APP_STORE_KEY_ID
         submit_to_testflight: true
-
-      email:
-        recipients:
-          - hameed490@yahoo.com
-        notify:
-          success: true
-          failure: true
